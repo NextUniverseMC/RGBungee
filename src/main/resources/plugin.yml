@@ -1,0 +1,6 @@
+name: RGBungee
+description: The Bungeecord backend that powers NextUniverse
+version: 1.0
+author: TheDiamondPicks
+website: https://nextuniverse.ml
+main: ml.nextuniverse.RGBungee.Main
