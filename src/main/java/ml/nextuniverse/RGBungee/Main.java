@@ -1,9 +1,16 @@
 package ml.nextuniverse.RGBungee;
 
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.config.Configuration;
+import net.md_5.bungee.config.ConfigurationProvider;
+import net.md_5.bungee.config.YamlConfiguration;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+
+import java.io.File;
+import java.io.IOException;
 
 public class Main extends Plugin {
     private static String motd;
@@ -16,17 +23,22 @@ public class Main extends Plugin {
 
     @Override
     public void onEnable() {
+        try {
+            Configuration configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(Main.getPlugin().getDataFolder(), "config.yml"));
+            OnPing.mainLine = ChatColor.translateAlternateColorCodes('&', configuration.getString("mainLine"));
+            OnPing.lowerLine = ChatColor.translateAlternateColorCodes('&', configuration.getString("lowerLine"));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
         getProxy().getPluginManager().registerListener(this, new OnPing());
-        motd = "Selecting minigame...";
         plugin = this;
 
         poolConfig = new JedisPoolConfig();
         jedisPool = new JedisPool(poolConfig, "localhost", 6379, 0);
         subscriberJedis = jedisPool.getResource();
         subscriber = new Subscriber();
-
-        Jedis jedis = new Jedis("localhost");
-
 
         new Thread(new Runnable() {
             public void run() {

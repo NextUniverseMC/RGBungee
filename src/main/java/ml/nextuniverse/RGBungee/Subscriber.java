@@ -6,8 +6,6 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import redis.clients.jedis.JedisPubSub;
 
-import java.io.IOException;
-
 /**
  * Created by TheDiamondPicks on 20/07/2017.
  */
@@ -16,12 +14,19 @@ public class Subscriber extends JedisPubSub {
     @Override
     public void onMessage(String channel, String message) {
         if (channel.equals("RandomGame")) {
-            if (message.equals("ServerStarted")) {
+            if (message.startsWith("ServerStarted")) {
                 ProxyServer.getInstance().broadcast(new ComponentBuilder("[Announcement]").color(ChatColor.LIGHT_PURPLE).bold(true).append(" A new minigame has been selected!").color(ChatColor.GRAY).bold(false).create());
                 for (ProxiedPlayer p : ProxyServer.getInstance().getServerInfo("lobby").getPlayers()) {
                     p.connect(ProxyServer.getInstance().getServerInfo("games"));
                 }
                 Main.publish("LobbyShutdown");
+                try {
+                    String game = message.split(";")[1];
+                    OnPing.minigameLine = "Current minigame: &b" + game;
+                }
+                catch (Exception e) {
+                    OnPing.minigameLine = "Join to see the current game.";
+                }
             }
             if (message.equals("ServerShutdown")) {
 //                try {
