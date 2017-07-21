@@ -19,7 +19,6 @@ public class Subscriber extends JedisPubSub {
                 for (ProxiedPlayer p : ProxyServer.getInstance().getServerInfo("lobby").getPlayers()) {
                     p.connect(ProxyServer.getInstance().getServerInfo("games"));
                 }
-                Main.publish("LobbyShutdown");
                 try {
                     String game = message.split(";")[1];
                     OnPing.minigameLine = "Current minigame: &b" + game;
@@ -27,6 +26,11 @@ public class Subscriber extends JedisPubSub {
                 catch (Exception e) {
                     OnPing.minigameLine = "Join to see the current game.";
                 }
+                while (ProxyServer.getInstance().getServerInfo("games").getPlayers().size() != ProxyServer.getInstance().getPlayers().size()) {
+
+                }
+                Main.publish("LobbyShutdown");
+
             }
             if (message.equals("ServerShutdown")) {
 //                try {
