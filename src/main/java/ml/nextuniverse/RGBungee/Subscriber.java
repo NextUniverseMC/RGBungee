@@ -21,10 +21,12 @@ public class Subscriber extends JedisPubSub {
                 }
                 try {
                     String game = message.split(";")[1];
-                    OnPing.minigameLine = "Current minigame: &b" + game;
+                    OnPing.minigameLine = ChatColor.translateAlternateColorCodes('&',"Current game: &b" + game);
                 }
                 catch (Exception e) {
                     OnPing.minigameLine = "Join to see the current game.";
+                    System.out.println(message);
+                    e.printStackTrace();
                 }
                 while (ProxyServer.getInstance().getServerInfo("games").getPlayers().size() != ProxyServer.getInstance().getPlayers().size()) {
 

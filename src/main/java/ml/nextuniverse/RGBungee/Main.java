@@ -1,6 +1,7 @@
 package ml.nextuniverse.RGBungee;
 
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -23,8 +24,10 @@ public class Main extends Plugin {
 
     @Override
     public void onEnable() {
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new SetMotdCommand());
+
         try {
-            Configuration configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(Main.getPlugin().getDataFolder(), "config.yml"));
+            Configuration configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(getDataFolder(), "config.yml"));
             OnPing.mainLine = ChatColor.translateAlternateColorCodes('&', configuration.getString("mainLine"));
             OnPing.lowerLine = ChatColor.translateAlternateColorCodes('&', configuration.getString("lowerLine"));
         }
