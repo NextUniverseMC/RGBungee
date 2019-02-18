@@ -34,7 +34,7 @@ public class SetMotdCommand extends Command {
             String message = sb.toString();
             ChatColor.translateAlternateColorCodes('&', message);
             try {
-                Configuration configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(ProxyServer.getInstance().getPluginsFolder(), "config.yml"));
+                Configuration configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(ProxyServer.getInstance().getPluginsFolder(), "RGBungee/config.yml"));
                 if (strings[0].equalsIgnoreCase("main")) {
                     OnPing.mainLine = message;
                     configuration.set("mainLine", message);
